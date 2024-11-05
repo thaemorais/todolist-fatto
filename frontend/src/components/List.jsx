@@ -69,6 +69,24 @@ export default function List({ tarefas, setTarefas, setOnEdit, getTarefas }) {
 		setDraggingTask(null);
 	};
 
+	const handleMoveUp = (index) => {
+		if (index > 0) {
+			const newTarefas = [...tarefas];
+			const [movedTask] = newTarefas.splice(index, 1);
+			newTarefas.splice(index - 1, 0, movedTask);
+			updateOrdens(newTarefas);
+		}
+	};
+
+	const handleMoveDown = (index) => {
+		if (index < tarefas.length - 1) {
+			const newTarefas = [...tarefas];
+			const [movedTask] = newTarefas.splice(index, 1);
+			newTarefas.splice(index + 1, 0, movedTask);
+			updateOrdens(newTarefas);
+		}
+	};
+
 	return (
 		<ul className="column m-20 flex flex-col items-center gap-5 w-screen">
 			{tarefas.map((tarefa, index) => {
@@ -77,7 +95,7 @@ export default function List({ tarefas, setTarefas, setOnEdit, getTarefas }) {
 				return (
 					<li
 						key={tarefa.idtarefas}
-						className={`item transition duration-500 delay-[50ms] relative flex items-center justify-between w-[50%] h-[116px] p-4 text-[#4B332F] rounded-md ${
+						className={`item cursor-pointer transition-all shadow-md duration-500 delay-[50ms] relative flex items-center justify-between w-[50%] h-[116px] p-4 text-[#4B332F] rounded-md ${
 							isValue ? "bg-green-200" : "bg-[#F0D1A8]"
 						}`}
 						draggable="true"
@@ -113,6 +131,24 @@ export default function List({ tarefas, setTarefas, setOnEdit, getTarefas }) {
 								className="flex items-center gap-1"
 							>
 								<Trash2 /> Excluir
+							</button>
+							<button
+								onClick={() => handleMoveUp(index)}
+								disabled={index === 0}
+								className={`flex items-center gap-1 ${
+									index === 0 ? "invisible" : ""
+								}`}
+							>
+								<ChevronUp /> Subir
+							</button>
+							<button
+								onClick={() => handleMoveDown(index)}
+								disabled={index === tarefas.length - 1}
+								className={`flex items-center gap-1 ${
+									index === tarefas.length - 1 ? "invisible" : ""
+								}`}
+							>
+								<ChevronDown /> Descer
 							</button>
 						</div>
 
