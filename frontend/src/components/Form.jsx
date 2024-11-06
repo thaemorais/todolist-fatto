@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { format } from "date-fns";
 
-export default function Form({ onEdit, setOnEdit, getTarefas }) {
+export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 	const ref = useRef();
 	const [selectedDate, setSelectedDate] = useState(null);
 
@@ -71,54 +71,63 @@ export default function Form({ onEdit, setOnEdit, getTarefas }) {
 
 		setOnEdit(null);
 		getTarefas();
+		toggleModal();
 	};
 
 	return (
 		<form
-			className="flex items-end justify-center gap-2"
+			className="flex flex-col items-center justify-start gap-2 w-full"
 			ref={ref}
 			onSubmit={handleSubmit}
 		>
-			<div className="flex flex-col justify-start items-start">
+			<div className="flex flex-col justify-start items-start w-full">
 				<label htmlFor="nome">Nome da tarefa*</label>
 				<input
 					name="nome"
 					id="nome"
 					type="text"
 					placeholder="Levar a vó no jiu-jitsu"
-					className="border-2 rounded-sm h-9 px-1"
+					className="border-2 rounded-xl h-9 px-1 w-full"
 					required
 				/>
 			</div>
-			<div className="flex flex-col justify-start items-start">
-				<label htmlFor="custo">Custo (R$)</label>
+			<div className="flex flex-col justify-start items-start w-full">
+				<label htmlFor="custo">Custo</label>
 				<input
 					name="custo"
 					type="number"
 					step="0.01"
-					placeholder="R$ 0,00"
-					className="border-2 rounded-sm h-9 px-1"
+					placeholder="0.00"
+					className="border-2 rounded-xl h-9 px-1 w-full"
 				/>
 			</div>
-			<div className="flex flex-col justify-start items-start">
+			<div className="flex flex-col justify-start items-start w-full">
 				<label htmlFor="data">Data limite</label>
 				<DatePicker
 					selected={selectedDate}
 					onChange={(date) => setSelectedDate(date)}
 					dateFormat="dd/MM/yyyy"
 					placeholderText="Selecione uma data"
-					className="border-2 rounded-sm h-9 px-1"
+					className="border-2 rounded-xl h-9 px-1 w-full"
 					showPopperArrow={false}
 					isClearable
 				/>
 			</div>
-
-			<button
-				type="submit"
-				className="flex justify-center px-2 py-2 rounded-md bg-[#5C9967] text-sm text-white hover:bg-lime-700"
-			>
-				+ Adicionar Tarefa
-			</button>
+			<div className="flex items-center justify-end w-full gap-2">
+				<button
+					type="button"
+					onClick={toggleModal}
+					className="flex justify-center px-4 py-2 rounded-[100px] bg-white border border-[#DB8A18] text-base text-[#DB8A18]"
+				>
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					className="flex justify-center px-4 py-2 rounded-[100px] bg-[#DB8A18] text-base text-white hover:bg-[#be5504]"
+				>
+					Salvar
+				</button>
+			</div>
 		</form>
 	);
 }
