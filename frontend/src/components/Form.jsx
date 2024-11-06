@@ -4,6 +4,9 @@ import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { format } from "date-fns";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 	const ref = useRef();
@@ -45,20 +48,15 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 
 		try {
 			if (onEdit) {
-				await axios.put(
-					`https://todolist-fatto-kappa.vercel.app/${onEdit.idtarefas}`,
-					tarefaData
-				);
+				await axios.put(`${process.env.URL}${onEdit.idtarefas}`, tarefaData);
 				toast.success("Tarefa atualizada com sucesso!");
 			} else {
-				const response = await axios.get(
-					"https://todolist-fatto-kappa.vercel.app"
-				);
+				const response = await axios.get(`${process.env.URL}`);
 				const tarefasExistentes = response.data;
 
 				tarefaData.ordem = tarefasExistentes.length + 1;
 
-				await axios.post("https://todolist-fatto-kappa.vercel.app", tarefaData);
+				await axios.post(`${process.env.URL}`, tarefaData);
 				toast.success("Tarefa adicionada com sucesso!");
 			}
 		} catch (error) {
