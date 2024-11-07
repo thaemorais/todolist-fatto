@@ -2,9 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Edit, Trash2 } from "react-feather";
 import { toast } from "react-toastify";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export default function List({
 	tarefas,
@@ -22,7 +19,7 @@ export default function List({
 		if (!confirmDelete) return;
 
 		try {
-			const { data } = await axios.delete(`${process.env.URL}${id}`);
+			const { data } = await axios.delete(`http://localhost:8800/${id}`);
 			const newArray = tarefas.filter((tarefa) => tarefa.idtarefas !== id);
 			setTarefas(newArray);
 			toast.success(data);

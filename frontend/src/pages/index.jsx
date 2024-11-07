@@ -6,9 +6,6 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import List from "./../components/List.jsx";
 import Form from "./../components/Form.jsx";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export default function Home() {
 	const [tarefas, setTarefas] = useState([]);
@@ -29,7 +26,7 @@ export default function Home() {
 
 	const getTarefas = async () => {
 		try {
-			const res = await axios.get(`${process.env.URL}`);
+			const res = await axios.get("http://localhost:8800/");
 			setTarefas(res.data.sort((a, b) => a.ordem - b.ordem));
 		} catch (error) {
 			toast.error(error.message);

@@ -4,9 +4,6 @@ import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { format } from "date-fns";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 	const ref = useRef();
@@ -48,15 +45,18 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 
 		try {
 			if (onEdit) {
-				await axios.put(`${process.env.URL}${onEdit.idtarefas}`, tarefaData);
+				await axios.put(
+					`http://localhost:8800/${onEdit.idtarefas}`,
+					tarefaData
+				);
 				toast.success("Tarefa atualizada com sucesso!");
 			} else {
-				const response = await axios.get(`${process.env.URL}`);
+				const response = await axios.get("http://localhost:8800");
 				const tarefasExistentes = response.data;
 
 				tarefaData.ordem = tarefasExistentes.length + 1;
 
-				await axios.post(`${process.env.URL}`, tarefaData);
+				await axios.post("http://localhost:8800", tarefaData);
 				toast.success("Tarefa adicionada com sucesso!");
 			}
 		} catch (error) {
