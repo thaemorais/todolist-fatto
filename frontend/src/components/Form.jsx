@@ -46,17 +46,22 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 		try {
 			if (onEdit) {
 				await axios.put(
-					`http://localhost:8800/${onEdit.idtarefas}`,
+					`https://todolist-ffatto-backend.vercel.app/${onEdit.idtarefas}`,
 					tarefaData
 				);
 				toast.success("Tarefa atualizada com sucesso!");
 			} else {
-				const response = await axios.get("http://localhost:8800");
+				const response = await axios.get(
+					"https://todolist-ffatto-backend.vercel.app/"
+				);
 				const tarefasExistentes = response.data;
 
 				tarefaData.ordem = tarefasExistentes.length + 1;
 
-				await axios.post("http://localhost:8800", tarefaData);
+				await axios.post(
+					"https://todolist-ffatto-backend.vercel.app/",
+					tarefaData
+				);
 				toast.success("Tarefa adicionada com sucesso!");
 			}
 		} catch (error) {
