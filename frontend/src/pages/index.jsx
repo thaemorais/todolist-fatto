@@ -26,9 +26,7 @@ export default function Home() {
 
 	const getTarefas = async () => {
 		try {
-			const res = await axios.get(
-				"https://todolist-ffatto-backend.vercel.app/"
-			);
+			const res = await axios.get("http://localhost:8800/");
 			setTarefas(res.data.sort((a, b) => a.ordem - b.ordem));
 		} catch (error) {
 			toast.error(error.message);

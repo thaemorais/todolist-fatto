@@ -19,9 +19,7 @@ export default function List({
 		if (!confirmDelete) return;
 
 		try {
-			const { data } = await axios.delete(
-				`https://todolist-ffatto-backend.vercel.app/${id}`
-			);
+			const { data } = await axios.delete(`http://localhost:8800/${id}`);
 			const newArray = tarefas.filter((tarefa) => tarefa.idtarefas !== id);
 			setTarefas(newArray);
 			toast.success(data);
