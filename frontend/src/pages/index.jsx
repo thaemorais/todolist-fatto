@@ -36,7 +36,7 @@ export default function Home() {
 	return (
 		<>
 			<Navbar />
-			<section className="mx-auto flex flex-col justify-center items-center text-center max-w-[1082px]">
+			<section className="notebook:justify-start notebook:max-w-[90%] monitor:max-w-[50%] max-w-[90%] mx-auto flex flex-col justify-center items-center text-center">
 				<div className="flex items-center justify-between w-full my-12">
 					<div className="flex flex-col items-start justify-start">
 						<h1 className="text-xl text-start">Olá!</h1>
@@ -52,13 +52,19 @@ export default function Home() {
 						+ Nova tarefa
 					</button>
 				</div>
-				<List
-					tarefas={tarefas}
-					setTarefas={setTarefas}
-					setOnEdit={setOnEdit}
-					getTarefas={getTarefas}
-					toggleModal={toggleModal}
-				/>
+				{tarefas.length > 0 ? (
+					<List
+						tarefas={tarefas}
+						setTarefas={setTarefas}
+						setOnEdit={setOnEdit}
+						getTarefas={getTarefas}
+						toggleModal={toggleModal}
+					/>
+				) : (
+					<h3 className="mx-auto ">
+						Adicione uma nova tarefa para iniciar seu dia!
+					</h3>
+				)}
 				<ToastContainer autoClose={3000} />
 				<div
 					id="modalTarefa"
@@ -66,7 +72,7 @@ export default function Home() {
 					aria-hidden="true"
 					className="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
 				>
-					<div className="relative w-full max-w-[50%] p-6 bg-white rounded-lg shadow-lg">
+					<div className="monitor:max-w-[50%] relative w-full max-w-[90%] p-6 bg-white rounded-lg shadow-lg">
 						<div className="flex items-center justify-between pb-4 border-b">
 							<h3 className="text-2xl font-semibold text-gray-900">
 								Nova tarefa

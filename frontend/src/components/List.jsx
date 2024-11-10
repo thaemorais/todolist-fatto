@@ -104,7 +104,7 @@ export default function List({
 				return (
 					<li
 						key={tarefa.idtarefas}
-						className={`item border-l-4 rounded-lg cursor-pointer transition-all shadow-md duration-500 delay-[50ms] relative flex items-center justify-between w-full h-[116px] p-4 text-black bg-white ${
+						className={`item border-l-4 rounded-lg cursor-pointer transition-all shadow-md duration-500 delay-[50ms] relative flex items-center justify-between w-full h-auto p-4 text-black bg-white ${
 							isValue ? "border-[#E74C3C]" : "border-l-[#DB8A18]"
 						}`}
 						draggable="true"
@@ -127,10 +127,10 @@ export default function List({
 								</svg>
 							</div>
 							<div className="flex flex-col items-start justify-center">
-								<h4 className="font-bold">
+								<h4 className="text-left font-bold">
 									{tarefa.ordem}. {tarefa.nome}
 								</h4>
-								<p>
+								<p className="text-left">
 									{!isNaN(tarefa.custo) && tarefa.custo !== null
 										? parseFloat(tarefa.custo).toLocaleString("pt-BR", {
 												style: "currency",
@@ -138,9 +138,18 @@ export default function List({
 										  })
 										: "Sem custo"}
 								</p>
-								<h5 className="mt-3 flex gap-1">
+								<h5 className="text-left mt-3 flex gap-1">
 									{tarefa.data && !isNaN(new Date(tarefa.data).getTime())
-										? `${new Date(tarefa.data).toLocaleDateString("pt-BR")}`
+										? new Date(tarefa.data)
+												.toLocaleDateString("pt-BR", {
+													day: "2-digit",
+													month: "long",
+													year: "numeric",
+												})
+												.replace(
+													/(\d{2}) de (\w+) de (\d{4})/,
+													"$1 de $2 de $3"
+												)
 										: "Sem data limite"}
 								</h5>
 							</div>
@@ -148,16 +157,20 @@ export default function List({
 						<div className="flex gap-2">
 							<button
 								onClick={() => handleEdit(tarefa)}
-								className={`w-10 h-10 rounded-full flex items-center justify-center gap-1 hover:text-white ${
-									isValue ? "hover:bg-[#E74C3C]" : "hover:bg-[#DB8A18]"
+								className={`notebook:w-10 notebook:h-10 w-5 h-5 rounded-full flex items-center justify-center gap-1 hover:text-white ${
+									isValue
+										? "notebook:hover:bg-[#E74C3C]"
+										: "notebook:hover:bg-[#DB8A18]"
 								}`}
 							>
 								<Edit />
 							</button>
 							<button
 								onClick={() => handleDelete(tarefa.idtarefas)}
-								className={`w-10 h-10 rounded-full flex items-center justify-center gap-1 hover:text-white ${
-									isValue ? "hover:bg-[#E74C3C]" : "hover:bg-[#DB8A18]"
+								className={`notebook:w-10 notebook:h-10 w-5 h-5 rounded-full flex items-center justify-center gap-1 hover:text-white ${
+									isValue
+										? "notebook:hover:bg-[#E74C3C]"
+										: "notebook:hover:bg-[#DB8A18]"
 								}`}
 							>
 								<Trash2 />
@@ -165,18 +178,26 @@ export default function List({
 							<button
 								onClick={() => handleMoveUp(index)}
 								disabled={index === 0}
-								className={`w-10 h-10 rounded-full flex items-center justify-center gap-1 hover:bg-[#DB8A18] hover:text-white ${
+								className={`notebook:w-10 notebook:h-10 w-5 h-5 rounded-full flex items-center justify-center gap-1 hover:bg-[#DB8A18] hover:text-white ${
 									index === 0 ? "invisible" : ""
-								} ${isValue ? "hover:bg-[#E74C3C]" : "hover:bg-[#DB8A18]"}`}
+								} ${
+									isValue
+										? "notebook:hover:bg-[#E74C3C]"
+										: "notebook:hover:bg-[#DB8A18]"
+								}`}
 							>
 								<ChevronUp />
 							</button>
 							<button
 								onClick={() => handleMoveDown(index)}
 								disabled={index === tarefas.length - 1}
-								className={`w-10 h-10 rounded-full flex items-center justify-center gap-1 hover:bg-[#DB8A18] hover:text-white ${
+								className={`notebook:w-10 notebook:h-10 w-5 h-5 rounded-full flex items-center justify-center gap-1 hover:bg-[#DB8A18] hover:text-white ${
 									index === tarefas.length - 1 ? "invisible" : ""
-								} ${isValue ? "hover:bg-[#E74C3C]" : "hover:bg-[#DB8A18]"}`}
+								} ${
+									isValue
+										? "notebook:hover:bg-[#E74C3C]"
+										: "notebook:hover:bg-[#DB8A18]"
+								}`}
 							>
 								<ChevronDown />
 							</button>

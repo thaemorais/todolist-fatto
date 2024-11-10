@@ -3,7 +3,6 @@ import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
-import { format } from "date-fns";
 
 export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 	const ref = useRef();
@@ -28,29 +27,55 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 
 		const tarefa = ref.current;
 
+		// Trata nome
 		if (!tarefa.nome.value) {
 			return toast.warn("Por favor, dê um nome à tarefa!");
 		}
 
-		const custo = parseFloat(tarefa.custo.value);
+		// Trata custo
+		let custo = tarefa.custo.value.trim();
 
-		let data = selectedDate ? format(selectedDate, "yyyy-MM-dd") : null;
+		// Substitui a vírgula por ponto, se necessário
+		custo = custo.replace(",", ".");
 
+		// Verifica se o valor tem até 2 casas decimais
+		if (!/^\d+(\.\d{1,2})?$/.test(custo)) {
+			return toast.warn(
+				"Por favor, insira um valor válido para o custo, com até 2 casas decimais!"
+			);
+		}
+
+		const custoFloat = parseFloat(custo);
+
+		// Verifica se o valor convertido é válido
+		if (isNaN(custoFloat)) {
+			return toast.warn("Por favor, insira um valor válido para o custo!");
+		}
+
+		// Trata data
+		let data = selectedDate
+			? new Date(selectedDate).toISOString().split("T")[0]
+			: null;
+
+		// Envia os dados
 		const tarefaData = {
 			nome: tarefa.nome.value,
-			custo,
+			custo: custoFloat, // Envia o valor de custo com 2 casas decimais
 			data,
-			ordem: null,
 		};
 
 		try {
 			if (onEdit) {
+				// Manter a ordem original da tarefa ao editar
+				tarefaData.ordem = onEdit.ordem;
+
 				await axios.put(
 					`https://todolist-fatto.vercel.app/${onEdit.idtarefas}`,
 					tarefaData
 				);
 				toast.success("Tarefa atualizada com sucesso!");
 			} else {
+				// Para novas tarefas, calcular a ordem
 				const response = await axios.get("https://todolist-fatto.vercel.app/");
 				const tarefasExistentes = response.data;
 
@@ -95,9 +120,9 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 				<label htmlFor="custo">Custo</label>
 				<input
 					name="custo"
-					type="number"
+					type="text"
 					step="0.01"
-					placeholder="0.00"
+					placeholder="0,00"
 					className="border-2 rounded-xl h-9 px-1 w-full"
 				/>
 			</div>
@@ -113,7 +138,7 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 					isClearable
 				/>
 			</div>
-			<div className="flex items-center justify-end w-full gap-2">
+			<div className="flex items-center justify-end w-full gap-2 mt-2">
 				<button
 					type="button"
 					onClick={toggleModal}
