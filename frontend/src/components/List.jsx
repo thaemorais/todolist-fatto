@@ -20,7 +20,7 @@ export default function List({
 
 		try {
 			const { data } = await axios.delete(
-				`http://todolist-fatto.vercel.app/${id}`
+				`https://todolist-fatto.vercel.app/${id}`
 			);
 			const newArray = tarefas.filter((tarefa) => tarefa.idtarefas !== id);
 			setTarefas(newArray);
