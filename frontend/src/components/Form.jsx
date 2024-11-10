@@ -33,23 +33,27 @@ export default function Form({ onEdit, setOnEdit, getTarefas, toggleModal }) {
 		}
 
 		// Trata custo
-		let custo = tarefa.custo.value.trim();
+		let custo = tarefa.custo.value;
 
-		// Substitui a vírgula por ponto, se necessário
-		custo = custo.replace(",", ".");
+		if (custo) {
+			custo = custo.trim();
 
-		// Verifica se o valor tem até 2 casas decimais
-		if (!/^\d+(\.\d{1,2})?$/.test(custo)) {
-			return toast.warn(
-				"Por favor, insira um valor válido para o custo, com até 2 casas decimais!"
-			);
-		}
+			// Substitui a vírgula por ponto, se necessário
+			custo = custo.replace(",", ".");
 
-		const custoFloat = parseFloat(custo);
+			// Verifica se o valor tem até 2 casas decimais
+			if (!/^\d+(\.\d{1,2})?$/.test(custo)) {
+				return toast.warn(
+					"Por favor, insira um valor válido para o custo, com até 2 casas decimais!"
+				);
+			}
 
-		// Verifica se o valor convertido é válido
-		if (isNaN(custoFloat)) {
-			return toast.warn("Por favor, insira um valor válido para o custo!");
+			var custoFloat = parseFloat(custo);
+
+			// Verifica se o valor convertido é válido
+			if (isNaN(custoFloat)) {
+				return toast.warn("Por favor, insira um valor válido para o custo!");
+			}
 		}
 
 		// Trata data
